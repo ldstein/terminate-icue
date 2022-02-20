@@ -33,9 +33,9 @@ How Terminate iCue works
 
 Setup
 ---------------------------------------
-- Download and extract Terminate iCue to your drive.
+- Download a release from https://github.com/ldstein/terminate-icue/releases and unzip to your drive.
 - Double click "setup.bat".
-- Click "Yes" when prompted "Do you want to allow this app to make changes to your device".
+- When asked "Do you want to allow this app to make changes to your device", click "Yes".
 - Select option 1 to run Terminate iCue at login.
 - Wait for setup to complete.
 - Optional: Select option 3 to disable Corsair background services to improve battery life.
@@ -60,4 +60,9 @@ Admin rights are required to add and remove tasks to Windows Task Scheduler and 
 
 You can, but this will cause the command prompt to briefly flash up at login. Running the .bat file as a task resolves this behaviour.
 
+TROUBLESHOOTING
+------------------------
 
+**It isn\'t working**
+
+Check you have downloaded a release from https://github.com/ldstein/terminate-icue/releases. If you downloaded a Zip of the repo, the bat file will not work due to Unix-style line breaks.

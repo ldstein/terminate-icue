@@ -1,4 +1,4 @@
-Terminate iCue v1.0
+Terminate iCue v1.1
 =======================================
 A hack for 2021 Lenovo Legion laptops to maintain iCue RGB profiles between reboots
 
@@ -37,17 +37,18 @@ Setup
 - Double click "setup.bat".
 - When asked "Do you want to allow this app to make changes to your device", click "Yes".
 - Select option 1 to run Terminate iCue at login.
+- Optionally, select 2 to terminate the iCue Plugin host. 
 - Wait for setup to complete.
-- Optional: Select option 3 to disable Corsair background services to improve battery life.
-- Select option 5 to exit.
+- Optional: Select option 4 to disable Corsair background services to improve battery life.
+- Select option 6 to exit.
 
 Removal
 ---------------------------------------
 - Double click "setup.bat"
 - Click "Yes" when prompted "Do you want to allow this app to make changes to your device"
-- Select option 2 to stop running Terminate iCue at login.
-- Optional: Select option 4 to re-enable Corsair background services.
-- Select option 5 to exit
+- Select option 3 to stop running Terminate iCue at login.
+- Optional: Select option 5 to re-enable Corsair background services.
+- Select option 6 to exit
 
 FAQ
 ------------------------
@@ -66,3 +67,26 @@ TROUBLESHOOTING
 **It isn\'t working**
 
 Check you have downloaded a release from https://github.com/ldstein/terminate-icue/releases. If you downloaded a Zip of the repo, the bat file will not work due to Unix-style line breaks.
+
+CREDITS
+------------------------
+rickje139 for his work which lead to Terminate iCue:
+https://www.reddit.com/r/LenovoLegion/comments/p5b8e2/comment/hyqis0u
+https://www.reddit.com/r/GamingLaptops/comments/n40jxx/i_have_found_a_way_to_disable_the_rgb_on_startup/
+
+felipe31soares for identifying working out how to terminate newer versions of iCue:
+https://www.reddit.com/r/LenovoLegion/comments/p5b8e2/comment/hswdixw
+
+goodsignal for identifying unplugging the AC adaptor reset the RGB:
+https://www.reddit.com/r/LenovoLegion/comments/p5b8e2/comment/htrrou1
+
+HISTORY
+------------------------
+v1.1
+- Ported to Powershell
+- Smarter calculation of delay before terminating
+- Add option to terminate iCue plugin host
+- Fixed bug where task was not run when on battery
+
+v1.0
+- Initial release

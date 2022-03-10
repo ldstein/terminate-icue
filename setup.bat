@@ -64,35 +64,42 @@ echo ===========================
 echo Select an option:
 echo.
 echo [1] Run Terminate iCue at login
-echo [2] Don't run Terminate iCue at login
-echo [3] Disable Corsair background services (conserves battery)
-echo [4] Enable Corsair background services
-echo [5] Exit Setup
+echo [2] OR Run Terminate iCue Plugin Host at login
+echo [3] Don't run Terminate iCue at login
+echo [4] Disable Corsair background services (conserves battery)
+echo [5] Enable Corsair background services
+echo [6] Exit Setup
 echo.
-set /p Input=Enter 1, 2, 3, 4 or 5:
+set /p Input=Enter 1, 2, 3, 4, 5 or 6:
 
 if "%Input%" equ "1" (
     call :Remove_Task
-	call :Install_Task
+	call :Install_Task terminate-icue.vbs
 	call :Setup_Complete
 	exit /b
 )
 if "%Input%" equ "2" (
-	call :Remove_Task
+    call :Remove_Task
+	call :Install_Task terminate-icue-plugin-host.vbs
 	call :Setup_Complete
 	exit /b
 )
 if "%Input%" equ "3" (
-	call :Deactive_Corsair_Services
+	call :Remove_Task
 	call :Setup_Complete
 	exit /b
 )
 if "%Input%" equ "4" (
-	call :Activate_Corsair_Services
+	call :Deactive_Corsair_Services
 	call :Setup_Complete
 	exit /b
 )
 if "%Input%" equ "5" (
+	call :Activate_Corsair_Services
+	call :Setup_Complete
+	exit /b
+)
+if "%Input%" equ "6" (
 	exit /b
 )
 
@@ -114,23 +121,35 @@ call :Show_Menu
 exit /b
 
 :Install_Task
-echo --------------------------
-echo Creating new task
-echo --------------------------
-SCHTASKS /CREATE /TN %TASK_NAME% /XML %TASK_XML%
-SCHTASKS /CHANGE /TN %TASK_NAME% /TR %TASK_COMMAND% /ru ""
+
+powershell -command "&{"^
+	"$name = 'Terminate iCue';"^
+	"$desc = 'Waits for iCue to load then terminates it';"^
+	"$userName = (Get-CimInstance -ClassName Win32_ComputerSystem).Username;"^
+	"$workingDir = '%~dp0' ;"^
+	"$arguments = \"%1\"; "^
+	"$action = New-ScheduledTaskAction -Execute 'wscript.exe' -Argument $arguments -WorkingDirectory $workingDir;"^
+	"$trigger = New-ScheduledTaskTrigger -AtLogon -User $username;"^
+	"$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries;"^
+	"$registered = Register-ScheduledTask -Action $action -RunLevel Highest -Trigger $trigger -TaskName $name -Description $desc -Settings $settings;"^
+	"if ($registered) { Write-Host \"Created Task $name\" }"^
+	"else { Write-Host \"Failed to create Task $name\" };"^
+	"}"
+
 exit /b
 
 
 :Remove_Task
-schtasks /query /TN %TASK_NAME% >NUL 2>&1
+powershell -command "&{"^
+	"$taskName = 'Terminate iCue';"^
+	"$taskExists = Get-ScheduledTask | Where-Object {$_.TaskName -eq $taskName };"^
+	"if ($taskExists){ "^
+	"    Unregister-ScheduledTask -ErrorVariable unregisterTaskError -TaskName $taskName -Confirm:$false; "^
+	"    if ($unregisterTaskError) { Write-Host \"Failed to remove Task $taskName\"} "^
+	"    else { Write-Host \"Removed Task $taskName\" } "^
+	"}"^
+	"}"
 
-if %errorlevel% neq 1 (
-    echo --------------------------
-	echo Removing existing task
-	echo --------------------------
-	SCHTASKS /Delete /TN %TASK_NAME% /F
-)
 exit /b
 
 :Activate_Corsair_Services

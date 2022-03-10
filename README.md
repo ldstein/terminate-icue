@@ -1,4 +1,4 @@
-Terminate iCue v1.1
+Terminate iCue v1.1.0
 =======================================
 A hack for 2021 Lenovo Legion laptops to maintain iCue RGB profiles between reboots
 
@@ -36,8 +36,7 @@ Setup
 - Download a release from https://github.com/ldstein/terminate-icue/releases and unzip to your drive.
 - Double click "setup.bat".
 - When asked "Do you want to allow this app to make changes to your device", click "Yes".
-- Select option 1 to run Terminate iCue at login.
-- Optionally, select 2 to terminate the iCue Plugin host. 
+- Select 1 to terminate iCue at login (recommended) or select 2 to terminate just the plugin host.
 - Wait for setup to complete.
 - Optional: Select option 4 to disable Corsair background services to improve battery life.
 - Select option 6 to exit.
@@ -59,7 +58,11 @@ Admin rights are required to add and remove tasks to Windows Task Scheduler and 
 
 **Why not just copy terminate-icue.bat to the startup folder?**
 
-You can, but this will cause the command prompt to briefly flash up at login. Running the .bat file as a task resolves this behaviour.
+This will cause the powrshell prompt to briefly flash up at login.
+
+**What is the difference between terminating iCue vs terminating the Plugin Host?**
+
+If you have iCue-enabled devices and want to retain their functionality (mice macros for example), iCue needs to be running. Terminating just the Plugin host keeps iCue alive while applying the RGB fix.  
 
 TROUBLESHOOTING
 ------------------------
@@ -70,7 +73,7 @@ Check you have downloaded a release from https://github.com/ldstein/terminate-ic
 
 CREDITS
 ------------------------
-rickje139 for his work which lead to Terminate iCue:
+rickje139 for his leads which lead to Terminate iCue:
 https://www.reddit.com/r/LenovoLegion/comments/p5b8e2/comment/hyqis0u
 https://www.reddit.com/r/GamingLaptops/comments/n40jxx/i_have_found_a_way_to_disable_the_rgb_on_startup/
 
@@ -82,11 +85,11 @@ https://www.reddit.com/r/LenovoLegion/comments/p5b8e2/comment/htrrou1
 
 HISTORY
 ------------------------
-v1.1
+v1.1.0
 - Ported to Powershell
 - Smarter calculation of delay before terminating
 - Add option to terminate iCue plugin host
 - Fixed bug where task was not run when on battery
 
-v1.0
+v1.0.0
 - Initial release
